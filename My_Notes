@@ -1,0 +1,112 @@
+git basic commands
+
+git help <verb> / git <verb> --help
+eg. git help config  / git config --help  
+
+
+git config --global -l  helps u see the username email and proxy  
+git add --help  (seeking help from git) gives help on add command
+
+git init   - git starts tracking the current folder by adding a .git file
+if you want to untrack it again remove the .git file by 
+  	rm -rf .git
+
+git status -- gives a list of untracked file
+
+To ignore some files u need to create a file .gitignore using
+touch .gitignore 
+add all the filenames u want to delete
+*.pyc removes all the files with the .pyc extension
+
+
+working directory -all untracked files
+staging area - all the files to be commited appear here
+and repository area
+
+git add-A    -adds all the files to staging area
+git commit -m "message"  - commits these changes to the repository
+
+To remove files fro the staging area use reset
+git reset filename     -- removes the file from staging area to the working area
+
+git reset   -- removes everything
+
+
+git log   - gives info about the commits made and also gives the hashes of all the commits
+
+
+git remote -v
+git branch -a   -- lists all the branches
+
+git diff   -- shows the changes made to the code
+
+git branch branch_name   -- creates a branch called branch_name
+git checkout branch_name  --  out the current branch
+checks
+
+git branch --merged    shows all the merged branches  
+
+git push -u origin branch_name   -- pushing branch to remote
+
+
+git branch -d branch_name    deletes branch locally but it is present in remote
+
+
+git push origin --delete branch_name    deletes branch remotely
+
+
+
+
+
+
+
+
+Branches in Git are incredibly lightweight as well. They are simply pointers to a specific commit -- nothing more. This is why many Git enthusiasts chant the mantra:
+				branch early, and branch often
+
+Because there is no storage / memory overhead with making many branches, it's easier to logically divide up your work than have big beefy branches.
+
+When we start mixing branches and commits, we will see how these two features combine. For now though, just remember that a branch essentially says "I want to include the work of this commit and all parent commits."
+
+The second way of combining work between branches is rebasing. Rebasing essentially takes a set of commits, "copies" them, and plops them down somewhere else.
+
+While this sounds confusing, the advantage of rebasing is that it can be used to make a nice linear sequence of commits. The commit log / history of the repository will be a lot cleaner if only rebasing is allowed.
+
+							REBASING
+This commands shifts selected commits to a diffrent branch so that there is a sequential/series of commits which can be viewed easily
+
+
+                             HEAD
+First we have to talk about "HEAD". HEAD is the symbolic name for the currently checked out commit -- it's essentially what commit you're working on top of.
+
+HEAD always points to the most recent commit which is reflected in the working tree. Most git commands which make changes to the working tree will start by changing HEAD.
+
+Normally HEAD points to a branch name (like bugFix). When you commit, the status of bugFix is altered and this change is visible through HEAD.
+
+
+                           Branch forcing
+
+One of the most common ways I use relative refs is to move branches around. You can directly reassign a branch to a commit with the -f option. So something like:
+
+git branch -f master HEAD~3
+
+moves (by force) the master branch to three parents behind HEAD.
+
+							Git Reset
+git reset reverts changes by moving a branch reference backwards in time to an older commit. In this sense you can think of it as "rewriting history;" git reset will move a branch backwards as if the commit had never been made in the first place.
+
+Let's see what that looks like:  git reset HEAD~2
+
+Nice! Git moved the master branch reference back to C1; now our local repository is in a state as if C2 had never happened.
+
+
+							Git Revert
+While resetting works great for local branches on your own machine, its method of "rewriting history" doesn't work for remote branches that others are using.
+
+In order to reverse changes and share those reversed changes with others, we need to use git revert. Let's see it in action
+
+				git revert HEAD
+
+Weird, a new commit plopped down below the commit we wanted to reverse. That's because this new commit C2' introduces changes -- it just happens to introduce changes that exactly reverses the commit of C2.
+
+With reverting, you can push out your changes to share with others.
